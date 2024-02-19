@@ -1,0 +1,59 @@
+<div class="general-block-decorator">
+    <h4>{intl l="Condition by customer family"}</h4>
+    <div class="table-responsive">
+    <table class="table table-striped table-condensed table-left-aligned">
+      <thead>
+          <td colspan="3"></td>
+          {$i=0}
+          {foreach from=$module_codes item=code}
+              {$i = $i + 1}
+            <td>{$code}</td>
+          {/foreach}
+      </thead>
+        {foreach from=$deliveryFamilyCondition key=family_id item=item}
+          <tr>
+            <td>{$family_codes[$family_id]}</td>
+            <td colspan="2"></td>
+              {foreach from=$item key=delivery_id item=is_valid}
+                <td>
+                  <div class="switch-small customer_family_condition_switch"
+                       data-module="{$delivery_id}"
+                       data-family="{$family_id}"
+                       data-category="delivery" data-on="success" data-off="danger"
+                       data-on-label="<i class='glyphicon glyphicon-ok'></i>"
+                       data-off-label="<i class='glyphicon glyphicon-remove'></i>">
+                    <input name="{$name|default:null}" type="checkbox" {if $is_valid}checked{/if}/>
+                  </div>
+                </td>
+              {/foreach}
+          </tr>
+        {/foreach}
+    </table>
+  </div>
+</div>
+
+<script>
+    $(function () {
+        var customerFamilyConditionSwitch = $(".customer_family_condition_switch");
+
+        customerFamilyConditionSwitch.bootstrapSwitch();
+
+        customerFamilyConditionSwitch.on("switch-change", function(e, data) {
+            var checkbox = $(this);
+            var isChecked = data.value;
+            var customerFamilyId = $(this).data('family');
+            var moduleId = $(this).data('module');
+            var url = "{url path="/admin/module/DeliveryCondition/customerfamily"}";
+            {literal}
+            $.post(url, {
+                customerFamilyId : customerFamilyId,
+                moduleId : moduleId,
+                isValid : isChecked
+            }).fail(function(data) {
+                console.log(data.responseText);
+                checkbox.bootstrapSwitch('toggleState', true);
+            });
+            {/literal}
+        });
+    });
+</script>

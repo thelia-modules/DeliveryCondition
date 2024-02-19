@@ -1,0 +1,46 @@
+{extends file="admin-layout.tpl"}
+
+{block name="after-bootstrap-css"}
+
+{/block}
+
+{block name="no-return-functions"}
+    {$admin_current_location = 'module'}
+{/block}
+
+{block name="page-title"}{intl l='Delivery condition module configuration' d='DeliveryCondition.bo.default'}{/block}
+
+{block name="check-resource"}admin.module{/block}
+{block name="check-access"}view{/block}
+{block name="check-module"}DeliveryCondition{/block}
+
+{block name="main-content"}
+  <div id="delivery_condition_container">
+      {loop name="customer_family_enabled" type="module" code="CustomerFamily" active="1"}
+          <div id="delivery_condition_customer_family">
+
+          </div>
+      {/loop}
+      {elseloop rel="customer_family_enabled"}
+          <div class="alert alert-info">
+              {intl l="Install and activate 'CustomerFamily' module to get configuration options." d='DeliveryCondition.bo.default'}
+          </div>
+      {/elseloop}
+  </div>
+{/block}
+
+{block name="javascript-initialization"}
+    {javascripts file='assets/js/bootstrap-switch/bootstrap-switch.js'}
+      <script src='{$asset_url}'></script>
+    {/javascripts}
+
+  <script>
+      $(function () {
+          if ( $( "#delivery_condition_customer_family" ).length ) {
+              $.get('{url path="/admin/module/DeliveryCondition/customerfamily"}').done(function (data) {
+                  $('#delivery_condition_customer_family').append(data);
+              });
+          }
+      });
+  </script>
+{/block}
