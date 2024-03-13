@@ -3,6 +3,7 @@
 namespace DeliveryCondition\Service;
 
 use CustomerFamily\Model\CustomerCustomerFamilyQuery;
+use CustomerFamily\Model\CustomerFamilyQuery;
 use DeliveryCondition\Model\DeliveryCustomerFamilyConditionQuery;
 use DeliveryCondition\Model\Map\DeliveryCustomerFamilyConditionTableMap;
 use Propel\Runtime\ActiveQuery\Criteria;
@@ -42,8 +43,12 @@ class DeliveryConditionService
         $customerCustomerFamily = CustomerCustomerFamilyQuery::create()
             ->findOneByCustomerId($customer->getId());
 
+        $customerFamily = $customerCustomerFamily?->getCustomerFamily() ??
+            CustomerFamilyQuery::create()->filterByIsDefault(true)->findOne();
+
+
         // If no customer family set, disable all modules
-        if (null === $customerCustomerFamily) {
+        if (null === $customerFamily) {
             $query->filterById(-1);
             return;
         }
@@ -60,7 +65,7 @@ class DeliveryConditionService
 
         $join->setJoinType(Criteria::JOIN);
         $query->addJoinObject($join, 'delivery_customer_family_condition_join')
-            ->addJoinCondition('delivery_customer_family_condition_join', DeliveryCustomerFamilyConditionTableMap::COL_CUSTOMER_FAMILY_ID.' = '.$customerCustomerFamily->getCustomerFamilyId())
+            ->addJoinCondition('delivery_customer_family_condition_join', DeliveryCustomerFamilyConditionTableMap::COL_CUSTOMER_FAMILY_ID.' = '.$customerFamily->getId())
             ->addJoinCondition('delivery_customer_family_condition_join', DeliveryCustomerFamilyConditionTableMap::COL_IS_VALID . ' = 1');
     }
 }
