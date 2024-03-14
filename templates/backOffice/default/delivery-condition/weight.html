@@ -1,0 +1,38 @@
+<div class="general-block-decorator">
+    <h4>{intl l="Condition by weight"}</h4>
+    <div class="row">
+        <div class="col-md-12">
+            <div class="col-md-3">
+                <label for="module">{intl l="Module"}</label>
+            </div>
+            <div class="col-md-4">
+                <label for="min_weight">{intl l="Min weight"}</label>
+            </div>
+            <div class="col-md-4">
+                <label for="max_weight">{intl l="Max weight"}</label>
+            </div>
+        </div>
+    </div>
+    {foreach from=$moduleCodes key=moduleId item=moduleCode}
+        <div class="row">
+            <div class="col-md-12">
+                <form action="{url path="/admin/module/DeliveryCondition/weight"}" method="post">
+                    <input type="hidden" name="module_id" value="{$moduleId}">
+                    <div class="col-md-3">
+                        <label for="{$moduleId}">{$moduleCode}</label>
+                    </div>
+                    <div class="col-md-4">
+                        <input type="text" class="form-control" placeholder="{intl l="Min weight"}" id="{$moduleId}" name="min_weight" value="{$moduleWeightConditions[$moduleId]['min']}">
+                    </div>
+                    <div class="col-md-4">
+                        <input type="text" class="form-control" placeholder="{intl l="Max weight"}" id="{$moduleId}" name="max_weight" value="{$moduleWeightConditions[$moduleId]['max']}">
+                    </div>
+                    <div class="col-md-1">
+                        <button type="submit" class="btn btn-block btn-success">{intl l="Save"}</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+        <br>
+    {/foreach}
+</div>

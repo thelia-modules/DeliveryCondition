@@ -43,20 +43,19 @@ class DeliveryCondition extends BaseModule
 
     public function update($currentVersion, $newVersion, ConnectionInterface $con = null): void
     {
-        // Todo uncomment this code when the module will have updates
-//        $finder = Finder::create()
-//            ->name('*.sql')
-//            ->depth(0)
-//            ->sortByName()
-//            ->in(__DIR__ . DS . 'Config' . DS . 'update');
-//
-//        $database = new Database($con);
-//
-//        /** @var \SplFileInfo $file */
-//        foreach ($finder as $file) {
-//            if (version_compare($currentVersion, $file->getBasename('.sql'), '<')) {
-//                $database->insertSql(null, [$file->getPathname()]);
-//            }
-//        }
+        $finder = Finder::create()
+            ->name('*.sql')
+            ->depth(0)
+            ->sortByName()
+            ->in(__DIR__ . DS . 'Config' . DS . 'update');
+
+        $database = new Database($con);
+
+        /** @var \SplFileInfo $file */
+        foreach ($finder as $file) {
+            if (version_compare($currentVersion, $file->getBasename('.sql'), '<')) {
+                $database->insertSql(null, [$file->getPathname()]);
+            }
+        }
     }
 }

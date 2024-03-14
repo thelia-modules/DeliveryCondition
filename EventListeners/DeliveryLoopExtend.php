@@ -19,7 +19,7 @@ class DeliveryLoopExtend implements EventSubscriberInterface
     {
         /** @var ModuleQuery $moduleQuery */
         $moduleQuery = $event->getModelCriteria();
-        $this->deliveryConditionService->filterByCustomerFamilyCondition($moduleQuery);
+        $this->deliveryConditionService->filterByAllConditions($moduleQuery);
     }
 
     public static function getSubscribedEvents()

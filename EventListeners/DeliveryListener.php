@@ -35,7 +35,7 @@ class DeliveryListener implements EventSubscriberInterface
         $moduleQuery = ModuleQuery::create()
             ->filterByCode($event->getModule()->getCode());
 
-        $this->deliveryConditionService->filterByCustomerFamilyCondition($moduleQuery);
+        $this->deliveryConditionService->filterByAllConditions($moduleQuery);
 
         $module = $moduleQuery->findOne();
         if (empty($module)) {
