@@ -13,8 +13,8 @@ CREATE TABLE `delivery_weight_condition`
 (
     `id` INTEGER NOT NULL AUTO_INCREMENT,
     `delivery_module_id` INTEGER NOT NULL,
-    `min_weight` DECIMAL NOT NULL,
-    `max_weight` DECIMAL NOT NULL,
+    `min_weight` DECIMAL,
+    `max_weight` DECIMAL,
     PRIMARY KEY (`id`),
     INDEX `fi_delivery_weight_condition_delivery_module_id` (`delivery_module_id`),
     CONSTRAINT `fk_delivery_weight_condition_delivery_module_id`
