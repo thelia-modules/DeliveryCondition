@@ -22,7 +22,7 @@ class DeliveryLoopExtend implements EventSubscriberInterface
         $this->deliveryConditionService->filterByAllConditions($moduleQuery);
     }
 
-    public static function getSubscribedEvents()
+    public static function getSubscribedEvents(): array
     {
         $events = [];
 
