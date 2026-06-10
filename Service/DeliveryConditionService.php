@@ -2,8 +2,6 @@
 
 namespace DeliveryCondition\Service;
 
-use CustomerFamily\Model\CustomerCustomerFamilyQuery;
-use CustomerFamily\Model\CustomerFamilyQuery;
 use DeliveryCondition\Model\DeliveryCustomerFamilyConditionQuery;
 use DeliveryCondition\Model\Map\DeliveryCustomerFamilyConditionTableMap;
 use DeliveryCondition\Model\Map\DeliveryWeightConditionTableMap;
@@ -32,6 +30,10 @@ class DeliveryConditionService
 
     public function filterByCustomerFamilyCondition(ModuleQuery $query): void
     {
+        if (!class_exists(\CustomerFamily\Model\CustomerFamilyQuery::class)) {
+            return;
+        }
+
         /** @var Session $session */
         $session = $this->requestStack->getCurrentRequest()->getSession();
 
@@ -49,11 +51,11 @@ class DeliveryConditionService
             return;
         }
 
-        $customerCustomerFamily = CustomerCustomerFamilyQuery::create()
+        $customerCustomerFamily = \CustomerFamily\Model\CustomerCustomerFamilyQuery::create()
             ->findOneByCustomerId($customer->getId());
 
         $customerFamily = $customerCustomerFamily?->getCustomerFamily() ??
-            CustomerFamilyQuery::create()->filterByIsDefault(true)->findOne();
+            \CustomerFamily\Model\CustomerFamilyQuery::create()->filterByIsDefault(true)->findOne();
 
 
         // If no customer family set, disable all modules

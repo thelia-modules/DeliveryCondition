@@ -2,8 +2,6 @@
 
 namespace DeliveryCondition\Controller;
 
-use CustomerFamily\Model\CustomerFamily;
-use CustomerFamily\Model\CustomerFamilyQuery;
 use DeliveryCondition\Model\DeliveryCustomerFamilyCondition;
 use DeliveryCondition\Model\DeliveryCustomerFamilyConditionQuery;
 use Symfony\Component\HttpFoundation\RequestStack;
@@ -26,27 +24,29 @@ class CustomerFamilyConditionController extends BaseAdminController
         $deliveryModules = ModuleQuery::create()
             ->findByCategory('delivery');
 
-        $customerFamilies = CustomerFamilyQuery::create()
-            ->find();
+        if (class_exists(\CustomerFamily\Model\CustomerFamilyQuery::class)) {
+            $customerFamilies = \CustomerFamily\Model\CustomerFamilyQuery::create()->find();
 
-        /** @var Module $deliveryModule */
-        foreach ($deliveryModules as $deliveryModule) {
-            $moduleCodes[$deliveryModule->getId()] = $deliveryModule->getCode();
+            /** @var Module $deliveryModule */
+            foreach ($deliveryModules as $deliveryModule) {
+                $moduleCodes[$deliveryModule->getId()] = $deliveryModule->getCode();
 
-            /** @var CustomerFamily $customerFamily */
-            foreach ($customerFamilies as $customerFamily) {
-                $customerFamilyDeliverysModules[$customerFamily->getId()][$deliveryModule->getId()] = 0;
-                $familyCodes[$customerFamily->getId()] = $customerFamily->getCode();
+                foreach ($customerFamilies as $customerFamily) {
+                    $customerFamilyDeliverysModules[$customerFamily->getId()][$deliveryModule->getId()] = 0;
+                    $familyCodes[$customerFamily->getId()] = $customerFamily->getCode();
+                }
             }
-        }
 
-        $customerFamilyDeliverys = DeliveryCustomerFamilyConditionQuery::create()
-            ->find();
+            $customerFamilyDeliverys = DeliveryCustomerFamilyConditionQuery::create()->find();
 
-        if (null !== $customerFamilyDeliverys) {
             /** @var DeliveryCustomerFamilyCondition $customerFamilyDelivery */
             foreach ($customerFamilyDeliverys as $customerFamilyDelivery) {
                 $customerFamilyDeliverysModules[$customerFamilyDelivery->getCustomerFamilyId()][$customerFamilyDelivery->getDeliveryModuleId()] = $customerFamilyDelivery->getIsValid();
+            }
+        } else {
+            /** @var Module $deliveryModule */
+            foreach ($deliveryModules as $deliveryModule) {
+                $moduleCodes[$deliveryModule->getId()] = $deliveryModule->getCode();
             }
         }
 
