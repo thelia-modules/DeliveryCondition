@@ -1,0 +1,67 @@
+<div class="card mt-3">
+    <div class="card-header">
+        <h4 class="card-title mb-0">{{ 'Condition by customer family'|trans({}, 'DeliveryCondition') }}</h4>
+    </div>
+    <div class="card-body">
+        <div class="table-responsive">
+            <table class="table table-striped table-sm align-middle">
+                <thead>
+                    <tr>
+                        <td colspan="3"></td>
+                        {% for moduleId, code in module_codes %}
+                            <td>{{ code }}</td>
+                        {% endfor %}
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for family_id, item in deliveryFamilyCondition %}
+                        <tr>
+                            <td>{{ family_codes[family_id] }}</td>
+                            <td colspan="2"></td>
+                            {% for delivery_id, is_valid in item %}
+                                <td>
+                                    <div class="form-check form-switch">
+                                        <input class="form-check-input customer-family-condition-switch"
+                                               type="checkbox"
+                                               role="switch"
+                                               data-save-url="{{ path('delivery_condition_customer_family_condition_save') }}"
+                                               data-module="{{ delivery_id }}"
+                                               data-family="{{ family_id }}"
+                                               {{ is_valid ? 'checked' : '' }}>
+                                    </div>
+                                </td>
+                            {% endfor %}
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+<script>
+    (function () {
+        document.querySelectorAll('.customer-family-condition-switch').forEach(function (input) {
+            input.addEventListener('change', function () {
+                var checkbox = this;
+                var body = new URLSearchParams();
+                body.append('customerFamilyId', checkbox.dataset.family);
+                body.append('moduleId', checkbox.dataset.module);
+                body.append('isValid', checkbox.checked ? 'true' : 'false');
+
+                fetch(checkbox.dataset.saveUrl, {
+                    method: 'POST',
+                    credentials: 'same-origin',
+                    headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+                    body: body.toString()
+                }).then(function (response) {
+                    if (!response.ok) {
+                        checkbox.checked = !checkbox.checked;
+                    }
+                }).catch(function () {
+                    checkbox.checked = !checkbox.checked;
+                });
+            });
+        });
+    })();
+</script>

@@ -5,6 +5,9 @@
   "require": {
     "thelia/installer": "~1.1"
   },
+  "suggest": {
+    "thelia/customer-family-module": "Enables delivery condition by customer family"
+  },
   "extra": {
     "installer-name": "DeliveryCondition"
   }

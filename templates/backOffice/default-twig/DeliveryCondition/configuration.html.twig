@@ -1,0 +1,68 @@
+<div class="card">
+    <div class="card-header">
+        <h3 class="card-title mb-0">{{ 'Delivery condition module configuration'|trans({}, 'DeliveryCondition.bo.default') }}</h3>
+    </div>
+    <div class="card-body">
+        <div id="delivery_condition_container">
+            {% if customerFamilyEnabled %}
+                <div id="delivery_condition_customer_family"
+                     data-delivery-condition-url="{{ path('delivery_condition_customer_family_condition_view') }}"></div>
+            {% else %}
+                <div class="alert alert-info">
+                    {{ "Install and activate 'CustomerFamily' module to get configuration options."|trans({}, 'DeliveryCondition.bo.default') }}
+                </div>
+            {% endif %}
+
+            <div id="delivery_condition_weight">
+                <div class="card mt-3">
+                    <div class="card-header">
+                        <h4 class="card-title mb-0">{{ 'Condition by weight'|trans({}, 'DeliveryCondition') }}</h4>
+                    </div>
+                    <div class="card-body">
+                        <div class="row mb-2">
+                            <div class="col-3">
+                                <label class="form-label">{{ 'Module'|trans({}, 'DeliveryCondition') }}</label>
+                            </div>
+                            <div class="col-4">
+                                <label class="form-label">{{ 'Min weight'|trans({}, 'DeliveryCondition') }}</label>
+                            </div>
+                            <div class="col-4">
+                                <label class="form-label">{{ 'Max weight'|trans({}, 'DeliveryCondition') }}</label>
+                            </div>
+                        </div>
+
+                        {% for moduleId, moduleCode in moduleCodes %}
+                            <form action="{{ path('delivery_condition_weight_condition_save') }}" method="post" class="row align-items-center mb-2">
+                                <input type="hidden" name="module_id" value="{{ moduleId }}">
+                                <div class="col-3">
+                                    <label class="form-label" for="min_weight_{{ moduleId }}">{{ moduleCode }}</label>
+                                </div>
+                                <div class="col-4">
+                                    <input type="text" class="form-control" placeholder="{{ 'Min weight'|trans({}, 'DeliveryCondition') }}" id="min_weight_{{ moduleId }}" name="min_weight" value="{{ moduleWeightConditions[moduleId]['min'] }}">
+                                </div>
+                                <div class="col-4">
+                                    <input type="text" class="form-control" placeholder="{{ 'Max weight'|trans({}, 'DeliveryCondition') }}" id="max_weight_{{ moduleId }}" name="max_weight" value="{{ moduleWeightConditions[moduleId]['max'] }}">
+                                </div>
+                                <div class="col-1">
+                                    <button type="submit" class="btn btn-success w-100">{{ 'Save'|trans({}, 'DeliveryCondition') }}</button>
+                                </div>
+                            </form>
+                        {% endfor %}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    (function () {
+        var target = document.getElementById('delivery_condition_customer_family');
+        if (!target) {
+            return;
+        }
+        fetch(target.dataset.deliveryConditionUrl, { credentials: 'same-origin' })
+            .then(function (response) { return response.text(); })
+            .then(function (html) { target.insertAdjacentHTML('beforeend', html); });
+    })();
+</script>

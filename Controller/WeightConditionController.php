@@ -2,18 +2,11 @@
 
 namespace DeliveryCondition\Controller;
 
-use CustomerFamily\Model\CustomerFamily;
-use CustomerFamily\Model\CustomerFamilyQuery;
-use DeliveryCondition\Model\DeliveryCustomerFamilyCondition;
-use DeliveryCondition\Model\DeliveryCustomerFamilyConditionQuery;
 use DeliveryCondition\Model\DeliveryWeightConditionQuery;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\Routing\Attribute\Route;
 use Thelia\Controller\Admin\BaseAdminController;
-use Thelia\Core\HttpFoundation\JsonResponse;
-use Thelia\Model\Module;
-use Thelia\Model\ModuleQuery;
 use Thelia\Tools\URL;
 
 #[Route("/admin/module/DeliveryCondition/weight", name: "delivery_condition_weight_condition_")]
