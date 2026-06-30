@@ -34,8 +34,14 @@ class DeliveryConditionService
             return;
         }
 
+        $request = $this->requestStack->getCurrentRequest();
+
+        if (null === $request || !$request->hasSession()) {
+            return;
+        }
+
         /** @var Session $session */
-        $session = $this->requestStack->getCurrentRequest()->getSession();
+        $session = $request->getSession();
 
         $customer = $session->getCustomerUser();
 
@@ -83,8 +89,14 @@ class DeliveryConditionService
     public function filterByWeightCondition(ModuleQuery $query): void
     {
         try {
+            $request = $this->requestStack->getCurrentRequest();
+
+            if (null === $request || !$request->hasSession()) {
+                return;
+            }
+
             /** @var Session $session */
-            $session = $this->requestStack->getSession();
+            $session = $request->getSession();
 
             $cart = $session->getSessionCart($this->dispatcher);
 
