@@ -126,8 +126,7 @@ class DeliveryConditionService
 
             $query->where(['min_weight', 'max_weight'], Criteria::LOGICAL_AND);
 
-        } catch (\Exception $e) {
-            dd($e->getMessage());
+        } catch (\Exception) {
             // If an exception is thrown, don't filter
         }
     }
