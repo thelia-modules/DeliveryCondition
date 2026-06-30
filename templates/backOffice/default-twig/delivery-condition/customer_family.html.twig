@@ -24,7 +24,7 @@
                                         <input class="form-check-input customer-family-condition-switch"
                                                type="checkbox"
                                                role="switch"
-                                               data-save-url="{{ path('delivery_condition_customer_family_condition_save') }}"
+                                               data-save-url="{{ path('delivery_condition_customer_family_condition_save') }}?_token={{ assignToken() }}"
                                                data-module="{{ delivery_id }}"
                                                data-family="{{ family_id }}"
                                                {{ is_valid ? 'checked' : '' }}>
