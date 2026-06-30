@@ -32,7 +32,7 @@
                         </div>
 
                         {% for moduleId, moduleCode in moduleCodes %}
-                            <form action="{{ path('delivery_condition_weight_condition_save') }}" method="post" class="row align-items-center mb-2">
+                            <form action="{{ path('delivery_condition_weight_condition_save') }}?_token={{ assignToken() }}" method="post" class="row align-items-center mb-2">
                                 <input type="hidden" name="module_id" value="{{ moduleId }}">
                                 <div class="col-3">
                                     <label class="form-label" for="min_weight_{{ moduleId }}">{{ moduleCode }}</label>

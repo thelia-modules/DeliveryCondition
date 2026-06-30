@@ -7,15 +7,18 @@ use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\Routing\Attribute\Route;
 use Thelia\Controller\Admin\BaseAdminController;
+use Thelia\Tools\TokenProvider;
 use Thelia\Tools\URL;
 
 #[Route("/admin/module/DeliveryCondition/weight", name: "delivery_condition_weight_condition_")]
 class WeightConditionController extends BaseAdminController
 {
     #[Route("", name: "save", methods: ["POST"])]
-    public function saveAction(RequestStack $requestStack)
+    public function saveAction(RequestStack $requestStack, TokenProvider $tokenProvider): RedirectResponse
     {
         $request = $requestStack->getCurrentRequest();
+
+        $tokenProvider->checkToken((string) $request->query->get('_token'));
 
         $moduleId = $request->request->get("module_id");
         $minWeight = $request->request->get("min_weight");
