@@ -18,7 +18,7 @@ class WeightConditionController extends BaseAdminController
     {
         $request = $requestStack->getCurrentRequest();
 
-        $tokenProvider->checkToken((string) $request->query->get('_token'));
+        $tokenProvider->checkToken((string) $request->request->get('_token'));
 
         $moduleId = $request->request->get("module_id");
         $minWeight = $request->request->get("min_weight");
