@@ -30,7 +30,10 @@ class DeliveryConditionService
 
     public function filterByCustomerFamilyCondition(ModuleQuery $query): void
     {
-        if (!class_exists(\CustomerFamily\Model\CustomerFamilyQuery::class)) {
+        if (
+            !class_exists(\CustomerFamily\Model\CustomerFamilyQuery::class)
+            || !class_exists(\CustomerFamily\Model\CustomerCustomerFamilyQuery::class)
+        ) {
             return;
         }
 
