@@ -62,8 +62,23 @@
         if (!target) {
             return;
         }
+        // Scripts inserted through insertAdjacentHTML are not executed: re-create them.
+        function runScripts(root) {
+            root.querySelectorAll('script').forEach(function (old) {
+                var script = document.createElement('script');
+                Array.prototype.forEach.call(old.attributes, function (attribute) {
+                    script.setAttribute(attribute.name, attribute.value);
+                });
+                script.textContent = old.textContent;
+                old.parentNode.replaceChild(script, old);
+            });
+        }
+
         fetch(target.dataset.deliveryConditionUrl, { credentials: 'same-origin' })
             .then(function (response) { return response.text(); })
-            .then(function (html) { target.insertAdjacentHTML('beforeend', html); });
+            .then(function (html) {
+                target.insertAdjacentHTML('beforeend', html);
+                runScripts(target);
+            });
     })();
 </script>
